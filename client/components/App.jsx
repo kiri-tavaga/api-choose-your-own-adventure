@@ -1,30 +1,30 @@
-import { React, Component } from 'react'
+import React from 'react'
 import request from 'superagent'
 
-export default class App extends Component {
+export default class App extends React.Component {
   state = {
-    message: ''
+    source: '',
+    translation: ''
   }
 
   componentDidMount() {
     request
-      .get('https://lakerolmaker-insult-generator-v1.p.mashape.com/')
-      .set(
-        'X-Mashape-Authorization',
-        '9fphVRr8qFmshJBbwNojxXFn6pPfp12f3Jjjsn5ZszP5F62C3D'
-      )
-      .set('Accept: text/plain')
+      .get('https://eda-te-reo.herokuapp.com/api/proverbs')
       .then(res => {
-        this.setState({ message: res.body.message }).catch(err => {
-          this.setState({ message: err.message })
-        })
+        this.setState({ source: res.body.source })
+        this.setState({ translation: res.body.translation})
+      })
+      .catch(err => {
+        this.setState({ message: err.message })
       })
   }
 
   render() {
     return (
       <div>
-        <h1>{this.state.message}</h1>
+        <h1>Māori Proverb Translator</h1>
+        <h2>{this.state.source}</h2>
+        <p>{this.state.translation}</p>
       </div>
     )
   }
