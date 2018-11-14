@@ -3,10 +3,12 @@ import request from 'superagent'
 
 class App extends React.Component {
   state = {
+    city: null,
     icon: null,
     temp: null,
     condition: null,
-    humidity: null
+    humidity: null,
+    updated: null
   }
 
   componentDidMount () {
@@ -20,8 +22,9 @@ class App extends React.Component {
             temp: res.body.current.temp_c + '°C',
             city: res.body.location.name,
             condition: res.body.current.condition.text,
-            humidity: res.body.current.humidity,
-            icon: res.body.current.condition.icon
+            humidity: res.body.current.humidity + "%",
+            icon: res.body.current.condition.icon,
+            updated: res.body.current.last_updated
           }
         )
       })
@@ -30,11 +33,11 @@ class App extends React.Component {
   render () {
     return (
       <div>
-        <h1>React development has begun!</h1>
-        <h2>And hopefully there will be some API stuff below!</h2>
-        <p>The current weather in {this.state.name} is {this.state.condition}.</p>
+        <h1>Current weather in {this.state.city}</h1>
+        <h2>{this.state.condition}</h2>
         <img src={'http:' + this.state.icon}></img>
-        <p>The temparature is {this.state.temp} and the humidity is {this.state.humidity}.</p>
+        <h3>The temparature is {this.state.temp} and the humidity is {this.state.humidity}.</h3>
+        <p>Weather data last updated {this.state.updated}</p>
       </div>
     )
   }
