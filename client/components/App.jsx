@@ -11,8 +11,13 @@ class App extends React.Component{
       condition: ''
     },
     news: {
-      newsURL: '',
+      newsURL: 'https://newsapi.org/v2/top-headlines',
       newsKey: '855e439c689c484b9818556631826045',
+      title: '',
+      description: '',
+      author: '',
+      content: '',
+      agent: ''
     }
   }
 
@@ -37,12 +42,21 @@ class App extends React.Component{
   }
 
   getNews() {
-    var newsUrl = 'https://newsapi.org/v2/top-headlines?' +
+    var newsUrl1 = 'https://newsapi.org/v2/top-headlines?' +
           'country=us&' +
           'apiKey=855e439c689c484b9818556631826045'
-    request.get(newsUrl)
+    request.get(newsUrl1)
     .then(res => {
-      console.log(response.json())
+      this.setState({
+        news: {
+          title: res.body.articles[0].title,
+          description: res.body.articles[0].description,
+          author: res.body.articles[0].author,
+          agent: res.body.articles[0].source.name,
+          content: res.body.articles[0].content
+          
+        }
+      })
     })   
   }
 
@@ -53,6 +67,11 @@ class App extends React.Component{
       <h1>This is the weather in { this.state.weather.city} </h1>
       <p>{this.state.weather.temperature}</p>
       <p>{this.state.weather.condition}</p>
+      <h1>The top news for the day is: </h1>
+      <h4>{this.state.news.title}</h4>
+      <h5>{this.state.news.description}</h5>
+      <p>Written by {this.state.news.author} from {this.state.news.agent}</p>
+      <p>{this.state.news.content}</p>
     </React.Fragment>
   )}
 }
